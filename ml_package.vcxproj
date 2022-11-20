@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CFunctions.cpp" />
+    <ClCompile Include="src\luapath.cpp" />
     <ClCompile Include="src\ml_package.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -31,6 +32,7 @@
     <ClInclude Include="include\luaconf.h" />
     <ClInclude Include="include\lualib.h" />
     <ClInclude Include="src\CFunctions.h" />
+    <ClInclude Include="src\luapath.h" />
     <ClInclude Include="src\ml_package.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
