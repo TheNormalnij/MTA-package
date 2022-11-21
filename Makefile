@@ -1,5 +1,5 @@
 NAME=ml_package
-EXTRA_FLAGS=
+EXTRA_FLAGS=-DLUA_USE_DLOPEN
 WARN_FLAGS= \
 	-Wfatal-errors \
 	-Wshadow \

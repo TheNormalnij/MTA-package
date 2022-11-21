@@ -17,7 +17,7 @@
 *********************************************************/
 
 #include "CFunctions.h"
-#include "luapath.h"
+#include "luapackage.h"
 
 #if defined(__x86_64__) || defined(_M_X64)
 #define DIR_PREFIX "x64" 

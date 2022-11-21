@@ -18,6 +18,7 @@
 
 #include "ml_package.hpp"
 #include "CFunctions.h"
+#include "luaimports.h"
 #include <string.h>
 
 ILuaModuleManager10* pModuleManager = NULL;
@@ -32,7 +33,8 @@ MTAEXPORT bool InitModule(ILuaModuleManager10* pManager, char* szModuleName, cha
 	*fVersion = MODULE_VERSION;
 
 	ms_bInitWorked = true;
-	return true;
+
+	return ImportLua();
 }
 
 MTAEXPORT void RegisterFunctions(lua_State* luaVM) {

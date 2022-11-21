@@ -24,7 +24,7 @@
     <ClCompile Include="src\ml_package.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\luapath.cpp">
+    <ClCompile Include="src\luapackage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -56,7 +56,10 @@
     <ClInclude Include="include\lualib.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
-    <ClInclude Include="src\luapath.h">
+    <ClInclude Include="src\luapackage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\luaimports.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
