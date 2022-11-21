@@ -1,0 +1,21 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "master", "ci-cd" ]
+  pull_request:
+    branches: [ "master", "ci-cd" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: make
+      run: make
+    - uses: actions/upload-artifact@master
+      with:
+        name: ml_package
+        path: .\bin
