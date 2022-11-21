@@ -13,6 +13,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
+    - name: download x86 libs
+      run: sudo apt install gcc-multilib g++-multilib
+
     - name: make
       run: make && make x86
     - uses: actions/upload-artifact@master
