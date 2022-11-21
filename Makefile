@@ -23,6 +23,10 @@ all:
 	@mkdir -p ./bin
 	@$(CC) -shared $(COMPILE_FLAGS) -I$(INCLUDE_PATH) $(SRC_FILES) -o ./bin/$(NAME).so
 	@echo "Builded!"
+x86:
+	@mkdir -p ./bin
+	@$(CC) -shared $(COMPILE_FLAGS) -I$(INCLUDE_PATH) $(SRC_FILES) -m32 -o ./bin/$(NAME).so
+	@echo "Builded!"
 clean:
 	@rm -r ./bin
 	@echo "Cleared!"
