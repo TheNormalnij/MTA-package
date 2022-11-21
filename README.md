@@ -1,7 +1,7 @@
 # Building
 
 ## Linux
-1. Run `make` to build module.
+1. Run `make` to build module. Use `make x86` to build module for 32 bit system.
 2. Builded module will be in the `./bin` directory
 
 ## Windows
