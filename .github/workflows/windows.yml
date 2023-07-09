@@ -21,5 +21,5 @@ jobs:
       with:
         name: MSVC_DLL_${{ matrix.build_type }}
         path: |
-          ${{ github.workspace }}/build_msvc/MTA-package/${{ matrix.build_type }}/ml_package.dll
+          ${{ github.workspace }}/build_msvc/src/${{ matrix.build_type }}/ml_package.dll
           
