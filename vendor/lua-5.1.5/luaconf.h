@@ -758,6 +758,6 @@ union luai_Cast { double l_d; long l_l; };
 */
 
 
-
+#include "luaconf-override.h"
 #endif
 
