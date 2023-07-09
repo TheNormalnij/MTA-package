@@ -5,6 +5,7 @@ project(MlPackage)
 set(CMAKE_CXX_STANDARD 20)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 if(MSVC)
     set(COMPILE_OPTIONS
@@ -36,9 +37,3 @@ endif()
 
 add_subdirectory(vendor)
 add_subdirectory(src)
-
-install(
-    TARGETS MlPackage
-    RENAME ml_package
-    RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/bin
-)
