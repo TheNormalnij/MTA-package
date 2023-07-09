@@ -3,8 +3,8 @@ name: Auto-build
 on: [push, pull_request, workflow_dispatch]
 
 jobs:        
-  msvc:
-    name: Build with MSVC
+  windows:
+    name: Build for Windows
     runs-on: windows-latest
     strategy:
         matrix:
@@ -23,4 +23,23 @@ jobs:
         name: Windows_${{ matrix.build_type }}_${{ matrix.arch }}
         path: |
           ${{ github.workspace }}/build_msvc/src/${{ matrix.build_type }}/ml_package.dll
-          
+  linux:
+    name: Build for Linux
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+            build_type: ["Release", "Debug"]
+            arch: ["x86", "x64"]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Compile for Linux
+      run: |
+        cmake . -B build
+        cmake --build build --config ${{ matrix.build_type }}
+      shell: bash
+    - name: Store artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Linux_${{ matrix.build_type }}_${{ matrix.arch }}
+        path: |
+          ${{ github.workspace }}/build/src/ml_package.so  

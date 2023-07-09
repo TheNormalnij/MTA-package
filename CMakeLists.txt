@@ -26,6 +26,7 @@ else()
         -Wextra
         -Wpedantic
         -Werror
+        -fPIC
     )
 endif()
 

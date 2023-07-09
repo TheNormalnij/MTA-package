@@ -22,5 +22,5 @@ else()
     list(APPEND COMPILE_DEFINITIONS $<$<CONFIG:Debug>:_DEBUG>)
 endif()
 
-target_compile_options(LuaLib PRIVATE ${COMPILE_OPTIONS})
+target_compile_options(LuaLib PRIVATE ${COMPILE_OPTIONS} -Wno-misleading-indentation -Wno-implicit-fallthrough)
 target_compile_definitions(LuaLib PRIVATE ${COMPILE_DEFINITIONS} _ALLOW_RTCc_IN_STL _CRT_SECURE_NO_WARNINGS)

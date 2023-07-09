@@ -20,6 +20,8 @@
 #include "CFunctions.h"
 #include <string.h>
 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+
 ILuaModuleManager10* pModuleManager = NULL;
 bool ms_bInitWorked = false;
 
