@@ -32,6 +32,9 @@ jobs:
             arch: ["x86", "x64"]
     steps:
     - uses: actions/checkout@v3
+    - name: download x86 libs
+      if: ${{ matrix.arch == 'x86' }}
+      run: sudo apt install gcc-multilib g++-multilib
     - name: Compile for Linux
       run: |
         cmake . -B build ${{ matrix.arch == 'x86' && '-DCMAKE_C_FLAGS=-m32 -DCMAKE_CXX_FLAGS=-m32' || '' }}

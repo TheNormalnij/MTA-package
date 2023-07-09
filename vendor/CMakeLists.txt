@@ -18,9 +18,10 @@ target_include_directories(
 if(MSVC)
     source_group("Lua\\Source Files" FILES ${LUA_SOURCES})
     source_group("Lua\\Header Files" FILES ${LUA_HEADERS})
+    list(APPEND COMPILE_DEFINITIONS _ALLOW_RTCc_IN_STL _CRT_SECURE_NO_WARNINGS)
 else()
     list(APPEND COMPILE_DEFINITIONS $<$<CONFIG:Debug>:_DEBUG>)
+    target_compile_options(LuaLib PRIVATE ${COMPILE_OPTIONS} -Wno-misleading-indentation -Wno-implicit-fallthrough)
 endif()
 
-target_compile_options(LuaLib PRIVATE ${COMPILE_OPTIONS} -Wno-misleading-indentation -Wno-implicit-fallthrough)
-target_compile_definitions(LuaLib PRIVATE ${COMPILE_DEFINITIONS} _ALLOW_RTCc_IN_STL _CRT_SECURE_NO_WARNINGS)
+target_compile_definitions(LuaLib PRIVATE ${COMPILE_DEFINITIONS})
