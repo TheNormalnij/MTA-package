@@ -4,8 +4,6 @@ project(MlPackage)
 
 set(CMAKE_CXX_STANDARD 20)
 
-message("vuild type is ${CMAKE_BUILD_TYPE} ${CMAKE_INSTALL_PREFIX}")
-
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 if(MSVC)
@@ -19,6 +17,11 @@ if(MSVC)
         $<$<CONFIG:Debug>:/INCREMENTAL /DEBUG>
     )
 else()
+    set(COMPILE_OPTIONS
+        $<$<CONFIG:Release>:-O3>
+        $<$<CONFIG:Debug>:-g>
+    )
+
     list(APPEND COMPILE_DEFINITIONS $<$<CONFIG:Debug>:_DEBUG>)
 
     list(APPEND COMPILE_OPTIONS

@@ -37,7 +37,7 @@ jobs:
       run: sudo apt install gcc-multilib g++-multilib
     - name: Compile for Linux
       run: |
-        cmake . -B build ${{ matrix.arch == 'x86' && '-DCMAKE_C_FLAGS=-m32 -DCMAKE_CXX_FLAGS=-m32' || '' }}
+        cmake . -B build ${{ matrix.arch == 'x86' && '-DCMAKE_C_FLAGS=-m32 -DCMAKE_CXX_FLAGS=-m32' || '' }} -D CMAKE_BUILD_TYPE=${{ matrix.build_type }}
         cmake --build build --config ${{ matrix.build_type }}
       shell: bash
     - name: Store artifacts
