@@ -18,8 +18,9 @@
 
 #include "ml_package.hpp"
 #include "CFunctions.h"
-#include "luaimports.h"
 #include <string.h>
+
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 
 ILuaModuleManager10* pModuleManager = NULL;
 bool ms_bInitWorked = false;
@@ -34,7 +35,7 @@ MTAEXPORT bool InitModule(ILuaModuleManager10* pManager, char* szModuleName, cha
 
 	ms_bInitWorked = true;
 
-	return ImportLua();
+	return true;
 }
 
 MTAEXPORT void RegisterFunctions(lua_State* luaVM) {

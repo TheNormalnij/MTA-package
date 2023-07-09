@@ -1,0 +1,48 @@
+name: Auto-build
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:        
+  windows:
+    name: Build for Windows
+    runs-on: windows-latest
+    strategy:
+        matrix:
+            build_type: ["Release", "Debug"]
+            arch: ["Win32", "x64"]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Compile with MSVC for Windows
+      run: |
+        cmake -A ${{ matrix.arch }} . -B build_msvc
+        cmake --build build_msvc --config ${{ matrix.build_type }}
+      shell: bash
+    - name: Store artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Windows_${{ matrix.build_type }}_${{ matrix.arch }}
+        path: |
+          ${{ github.workspace }}/bin/ml_package.dll
+  linux:
+    name: Build for Linux
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+            build_type: ["Release", "Debug"]
+            arch: ["x86", "x64"]
+    steps:
+    - uses: actions/checkout@v3
+    - name: download x86 libs
+      if: ${{ matrix.arch == 'x86' }}
+      run: sudo apt install gcc-multilib g++-multilib
+    - name: Compile for Linux
+      run: |
+        cmake . -B build ${{ matrix.arch == 'x86' && '-DCMAKE_C_FLAGS=-m32 -DCMAKE_CXX_FLAGS=-m32' || '' }} -D CMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        cmake --build build --config ${{ matrix.build_type }}
+      shell: bash
+    - name: Store artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Linux_${{ matrix.build_type }}_${{ matrix.arch }}
+        path: |
+          ${{ github.workspace }}/bin/ml_package.so  
