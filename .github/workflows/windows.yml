@@ -9,17 +9,18 @@ jobs:
     strategy:
         matrix:
             build_type: ["Release", "Debug"]
+            arch: ["Win32", "x64"]
     steps:
     - uses: actions/checkout@v3
     - name: Compile with MSVC for Windows
       run: |
-        cmake -A Win32 . -B build_msvc
+        cmake -A ${{ matrix.arch }} . -B build_msvc
         cmake --build build_msvc --config ${{ matrix.build_type }}
       shell: bash
     - name: Store artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: MSVC_DLL_${{ matrix.build_type }}
+        name: Windows_${{ matrix.build_type }}_${{ matrix.arch }}
         path: |
           ${{ github.workspace }}/build_msvc/src/${{ matrix.build_type }}/ml_package.dll
           
