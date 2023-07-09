@@ -17,10 +17,9 @@
 *********************************************************/
 
 #include "CFunctions.h"
-#include "luapackage.h"
 
 #if defined(__x86_64__) || defined(_M_X64)
-#define DIR_PREFIX "x64" 
+#define DIR_PREFIX "x64"
 #else
 #define DIR_PREFIX "x86" 
 #endif
@@ -53,8 +52,6 @@
 int CFunctions::initLuaPackage(lua_State* luaVM) {
     if (luaVM) {
         luaopen_package(luaVM);
-        setpath(luaVM, "path", MTA_LUA_PATH_DEFAULT);
-        setpath(luaVM, "cpath", MTA_LUA_CPATH_DEFAULT);
         lua_pushboolean(luaVM, true);
         return 1;
     }

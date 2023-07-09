@@ -1,45 +1,25 @@
-name: MSBuild
+name: Auto-build
 
-on:
-  push:
-    branches: [ "master", "ci-cd" ]
-  pull_request:
-    branches: [ "master" ]
+on: [push, pull_request, workflow_dispatch]
 
-env:
-  # Path to the solution file relative to the root of the project.
-  SOLUTION_FILE_PATH: .
-
-  # Configuration type to build.
-  # You can convert this to a build matrix if you need coverage of multiple configuration types.
-  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-  BUILD_CONFIGURATION: Debug
-
-permissions:
-  contents: read
-
-jobs:
-  build:
+jobs:        
+  msvc:
+    name: Build with MSVC
     runs-on: windows-latest
-
+    strategy:
+        matrix:
+            build_type: ["Release", "Debug"]
     steps:
     - uses: actions/checkout@v3
-
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
-
-    - name: Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
-
-    - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+    - name: Compile with MSVC for Windows
       run: |
-        msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=x64 ${{env.SOLUTION_FILE_PATH}}
-        msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=x86 ${{env.SOLUTION_FILE_PATH}}
-    - uses: actions/upload-artifact@master
+        cmake -A Win32 . -B build_msvc
+        cmake --build build_msvc --config ${{ matrix.build_type }}
+      shell: bash
+    - name: Store artifacts
+      uses: actions/upload-artifact@v3
       with:
-        name: ml_package
-        path: .\bin
+        name: MSVC_DLL_${{ matrix.build_type }}
+        path: |
+          ${{ github.workspace }}/build_msvc/MTA-package/${{ matrix.build_type }}/ml_package.dll
+          
