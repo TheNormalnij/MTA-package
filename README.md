@@ -1,8 +1,10 @@
 # Building
 
 ## Linux
-1. Run `make` to build module. Use `make x86` to build module for 32 bit system.
-2. Builded module will be in the `./bin` directory
+```bash
+cmake -B ./build ./
+cmake --build ./build
+```
 
 ## Windows
 1. Open project in Visual Studio (2022 preferred)
