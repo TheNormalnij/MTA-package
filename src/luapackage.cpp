@@ -64,8 +64,11 @@ static void ll_unloadlib(void *lib)
 static void *ll_load(lua_State *L, const char *path)
 {
     void *lib = dlopen(path, RTLD_NOW);
-    if (lib == NULL)
+    if (lib == nullptr) {
         lua_pushstring(L, dlerror());
+        return nullptr;
+    }
+
     return lib;
 }
 
@@ -75,6 +78,17 @@ static lua_CFunction ll_sym(lua_State *L, void *lib, const char *sym)
     if (f == NULL)
         lua_pushstring(L, dlerror());
     return f;
+}
+
+void ll_prepare() {
+    void* currentHandle = dlopen(nullptr, RTLD_NOW);
+
+    if (currentHandle == nullptr) {
+        return;
+    }
+
+    // TODO change with current *.so name
+    dlopen("ml_package.so", RTLD_NOW | RTLD_GLOBAL);
 }
 
 /* }====================================================== */
@@ -136,6 +150,10 @@ static lua_CFunction ll_sym(lua_State *L, void *lib, const char *sym)
     if (f == NULL)
         pusherror(L);
     return f;
+}
+
+static void ll_prepare() {
+    // empty
 }
 
 /* }====================================================== */

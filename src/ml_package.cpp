@@ -19,6 +19,7 @@
 #include "ml_package.hpp"
 #include "CFunctions.h"
 #include "luaimports.h"
+#include "luapackage.h"
 #include <string.h>
 
 ILuaModuleManager10* pModuleManager = nullptr;
@@ -31,6 +32,7 @@ MTAEXPORT bool InitModule(ILuaModuleManager10* pManager, char* szModuleName, cha
 
 	*fVersion = MODULE_VERSION;
 
+    ll_prepare();
 	return ImportLua();
 }
 
