@@ -21,8 +21,7 @@
 #include "luaimports.h"
 #include <string.h>
 
-ILuaModuleManager10* pModuleManager = NULL;
-bool ms_bInitWorked = false;
+ILuaModuleManager10* pModuleManager = nullptr;
 
 MTAEXPORT bool InitModule(ILuaModuleManager10* pManager, char* szModuleName, char* szAuthor, float* fVersion) {
 	pModuleManager = pManager;
@@ -32,14 +31,10 @@ MTAEXPORT bool InitModule(ILuaModuleManager10* pManager, char* szModuleName, cha
 
 	*fVersion = MODULE_VERSION;
 
-	ms_bInitWorked = true;
-
 	return ImportLua();
 }
 
 MTAEXPORT void RegisterFunctions(lua_State* luaVM) {
-	if (!ms_bInitWorked) return;
-
 	if (pModuleManager && luaVM) {
 		pModuleManager->RegisterFunction(luaVM, "initLuaPackage", CFunctions::initLuaPackage);
 	}
