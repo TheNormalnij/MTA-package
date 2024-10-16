@@ -25,5 +25,5 @@
 #define MODULE_VERSION 1.0f
 
 // Include default MTA module SDK includes
-#include "../include/Common.h"
-#include "../include/ILuaModuleManager.h"
+#include "Common.h"
+#include "ILuaModuleManager.h"

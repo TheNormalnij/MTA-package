@@ -22,8 +22,8 @@
 #include <map>
 #include <variant>
 
-#include "../include/ILuaModuleManager.h"
-#include "../include/Common.h"
+#include "ILuaModuleManager.h"
+#include "Common.h"
 
 extern ILuaModuleManager10* pModuleManager;
 

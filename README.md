@@ -1,20 +1,13 @@
 # Building
 
-## Linux x64
-1. Run commands
-```sh
-cmake . -B build -D CMAKE_BUILD_TYPE=Release
-cmake  --build build --config Release
-```
+## Linux
+1. Run `make` to build module. Use `make x86` to build module for 32 bit system.
 2. Builded module will be in the `./bin` directory
 
 ## Windows
-1. Run commands
-```sh
-cmake -A Win32 . -B build
-cmake --build build --config ${{ matrix.build_type }}
-```
-1. Builded DLL will be in the `.\bin` directory
+1. Open project in Visual Studio (2022 preferred)
+2. Compile module
+3. Builded DLL will be in the `.\bin\x64` or `.\bin\Win32` directory
 
 # Installation
 
