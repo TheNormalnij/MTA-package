@@ -17,6 +17,9 @@
 *********************************************************/
 
 #include "ml_package.hpp"
+#include "Common.h"
+#include "ILuaModuleManager.h"
+
 #include "CFunctions.h"
 #include "luaimports.h"
 #include "luapackage.h"

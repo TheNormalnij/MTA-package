@@ -4,9 +4,11 @@
 *
 *  ml_package, Native lua package system
 *
-*  Copyright © 2003-2008 MTA.  All Rights Reserved.
+*  Copyright (c) 2024 Uladzislau Nikalayevich. All Rights Reserved.
 *
-*  Grand Theft Auto is © 2002-2003 Rockstar North
+*  Copyright (c) 2003-2008 MTA.  All Rights Reserved.
+*
+*  Grand Theft Auto is (c) 2002-2003 Rockstar North
 *
 *  THE FOLLOWING SOURCES ARE PART OF THE MULTI THEFT
 *  AUTO SOFTWARE DEVELOPMENT KIT AND ARE RELEASED AS
@@ -20,10 +22,6 @@
 
 /** MODULE SPECIFIC INFORMATION **/
 
-#define MODULE_NAME "Lua package module"
-#define	MODULE_AUTHOR "TheNormalnij"
-#define MODULE_VERSION 1.0f
-
-// Include default MTA module SDK includes
-#include "Common.h"
-#include "ILuaModuleManager.h"
+constexpr const char* MODULE_NAME = "Lua package module";
+constexpr const char* MODULE_AUTHOR = "TheNormalnij";
+constexpr const float MODULE_VERSION = 1.0f;
