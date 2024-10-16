@@ -16,7 +16,7 @@
 *
 *********************************************************/
 
-#include "ml_package.hpp"
+#include "ml_package.h"
 #include "include/Common.h"
 #include "include/ILuaModuleManager.h"
 

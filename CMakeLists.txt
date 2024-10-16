@@ -41,8 +41,8 @@ else()
     )
 endif()
 
-file(GLOB_RECURSE INCLUDE_FILES ./src/include/*)
-file(GLOB_RECURSE SOURCE_FILES ./src/*)
+file(GLOB INCLUDE_FILES ./src/include/*)
+file(GLOB SOURCE_FILES ./src/*)
 
 target_sources(
     MlPackage
@@ -65,7 +65,7 @@ if(WIN32)
         target_link_libraries(MlPackage ${CMAKE_SOURCE_DIR}/lib/lua5.1.lib)
     endif()
 else()
-    file(GLOB_RECURSE LINUX_PLATFORM_FILES ./src/platform/linux/*)
+    file(GLOB LINUX_PLATFORM_FILES ./src/platform/linux/*)
 
     target_sources(
         MlPackage
