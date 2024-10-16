@@ -32,12 +32,12 @@
 
 #include <dlfcn.h>
 #include <stdarg.h>
-#include "Common.h"
-#include "ILuaModuleManager.h"
-#include "lauxlib.h"
-#include "luaconf.h"
-#include "lua.h"
-#include "lualib.h"
+#include "include/Common.h"
+#include "include/ILuaModuleManager.h"
+#include "include/lauxlib.h"
+#include "include/luaconf.h"
+#include "include/lua.h"
+#include "include/lualib.h"
 
 /* This file extracts the lua function addresses from the server core to avoid lua gc crashes */
 

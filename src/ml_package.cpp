@@ -17,13 +17,16 @@
 *********************************************************/
 
 #include "ml_package.hpp"
-#include "Common.h"
-#include "ILuaModuleManager.h"
+#include "include/Common.h"
+#include "include/ILuaModuleManager.h"
 
 #include "CFunctions.h"
-#include "luaimports.h"
 #include "luapackage.h"
 #include <string.h>
+
+#ifdef __linux__
+#include "platform/linux/luaimports.h"
+#endif
 
 ILuaModuleManager10* pModuleManager = nullptr;
 
@@ -36,7 +39,11 @@ MTAEXPORT bool InitModule(ILuaModuleManager10* pManager, char* szModuleName, cha
 	*fVersion = MODULE_VERSION;
 
     ll_prepare();
+#ifdef __linux__
 	return ImportLua();
+#elif
+    return true;
+#endif
 }
 
 MTAEXPORT void RegisterFunctions(lua_State* luaVM) {

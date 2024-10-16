@@ -1,6 +1,6 @@
 
 #include "luapackage.h"
-#include "luaconf.h"
+#include "include/luaconf.h"
 
 /*
 ** $Id: loadlib.c,v 1.52.1.4 2009/09/09 13:17:16 roberto Exp $
@@ -18,10 +18,10 @@
 #define loadlib_c
 #define LUA_LIB
 
-#include "lua.h"
+#include "include/lua.h"
 
-#include "lauxlib.h"
-#include "lualib.h"
+#include "include/lauxlib.h"
+#include "include/lualib.h"
 
 /* prefix for open functions in C libraries */
 #define LUA_POF "luaopen_"
@@ -152,7 +152,7 @@ static lua_CFunction ll_sym(lua_State *L, void *lib, const char *sym)
     return f;
 }
 
-static void ll_prepare() {
+void ll_prepare() {
     // empty
 }
 

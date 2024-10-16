@@ -4,9 +4,9 @@
 *
 *  ml_package, Native lua package system
 *
-*  Copyright © 2003-2008 MTA.  All Rights Reserved.
+*  Copyright ï¿½ 2003-2008 MTA.  All Rights Reserved.
 *
-*  Grand Theft Auto is © 2002-2003 Rockstar North
+*  Grand Theft Auto is ï¿½ 2002-2003 Rockstar North
 *
 *  THE FOLLOWING SOURCES ARE PART OF THE MULTI THEFT
 *  AUTO SOFTWARE DEVELOPMENT KIT AND ARE RELEASED AS
@@ -17,9 +17,9 @@
 *********************************************************/
 
 extern "C" {
-#	include <lua.h>
-#	include <lualib.h>
-#	include <lauxlib.h>
+#	include "lua.h"
+#	include "lualib.h"
+#	include "lauxlib.h"
 }
 
 #ifdef _WIN32
