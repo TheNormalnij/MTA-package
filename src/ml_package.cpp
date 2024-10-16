@@ -41,7 +41,7 @@ MTAEXPORT bool InitModule(ILuaModuleManager10* pManager, char* szModuleName, cha
     ll_prepare();
 #ifdef __linux__
 	return ImportLua();
-#elif
+#else
     return true;
 #endif
 }
