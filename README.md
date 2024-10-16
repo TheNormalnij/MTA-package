@@ -7,9 +7,17 @@ cmake --build ./build
 ```
 
 ## Windows
-1. Open project in Visual Studio (2022 preferred)
-2. Compile module
-3. Builded DLL will be in the `.\bin\x64` or `.\bin\Win32` directory
+For x86 MTA server:
+```bat
+cmake -A Win32 . -B build
+cmake --build build --config Release
+```
+
+for x64 MTA server:
+```bat
+cmake -A x64 . -B build
+cmake --build build --config Release
+```
 
 # Installation
 

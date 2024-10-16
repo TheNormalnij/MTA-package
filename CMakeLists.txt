@@ -58,10 +58,18 @@ target_include_directories(
         include
 )
 
-target_compile_definitions(
-    MlPackage
-    PUBLIC
-        LUA_USE_DLOPEN)
+if(WIN32)
+    if(${CMAKE_CXX_COMPILER_ARCHITECTURE_ID} STREQUAL "x64")
+        target_link_libraries(MlPackage ${CMAKE_SOURCE_DIR}/lib/lua5.1_64.lib)
+    else()
+        target_link_libraries(MlPackage ${CMAKE_SOURCE_DIR}/lib/lua5.1.lib)
+    endif()
+else()
+    target_compile_definitions(
+        MlPackage
+        PUBLIC
+            LUA_USE_DLOPEN)
+endif()
 
 target_compile_options(MlPackage PRIVATE ${COMPILE_OPTIONS})
 target_compile_definitions(MlPackage PRIVATE ${COMPILE_DEFINITIONS} _ALLOW_RTCc_IN_STL)
