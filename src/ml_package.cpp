@@ -26,6 +26,8 @@
 
 #ifdef __linux__
 #include "platform/linux/luaimports.h"
+#else
+#define ImportLua() true
 #endif
 
 ILuaModuleManager10* pModuleManager = nullptr;
@@ -39,11 +41,7 @@ MTAEXPORT bool InitModule(ILuaModuleManager10* pManager, char* szModuleName, cha
 	*fVersion = MODULE_VERSION;
 
     ll_prepare();
-#ifdef __linux__
 	return ImportLua();
-#else
-    return true;
-#endif
 }
 
 MTAEXPORT void RegisterFunctions(lua_State* luaVM) {

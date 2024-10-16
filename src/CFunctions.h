@@ -18,12 +18,7 @@
 
 #pragma once
 
-#include <cstdio>
-#include <map>
-#include <variant>
-
 #include "include/ILuaModuleManager.h"
-#include "include/Common.h"
 
 extern ILuaModuleManager10* pModuleManager;
 

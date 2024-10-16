@@ -20,8 +20,6 @@
 
 #pragma once
 
-/** MODULE SPECIFIC INFORMATION **/
-
 constexpr const char* MODULE_NAME = "Lua package module";
 constexpr const char* MODULE_AUTHOR = "TheNormalnij";
 constexpr const float MODULE_VERSION = 1.0f;

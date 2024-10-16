@@ -1,7 +1,3 @@
-
-#include "luapackage.h"
-#include "include/luaconf.h"
-
 /*
 ** $Id: loadlib.c,v 1.52.1.4 2009/09/09 13:17:16 roberto Exp $
 ** Dynamic library loader for Lua
@@ -12,16 +8,16 @@
 ** implementation for Windows, and a stub for other systems.
 */
 
+#include "luapackage.h"
+#include "include/luaconf.h"
+
 #include <stdlib.h>
 #include <string.h>
 
 #define loadlib_c
 #define LUA_LIB
 
-#include "include/lua.h"
-
-#include "include/lauxlib.h"
-#include "include/lualib.h"
+#include "include/lua.hpp"
 
 /* prefix for open functions in C libraries */
 #define LUA_POF "luaopen_"

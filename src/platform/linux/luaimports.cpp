@@ -28,14 +28,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef WIN32
-
 #include <dlfcn.h>
 #include <stdarg.h>
 #include "include/Common.h"
 #include "include/ILuaModuleManager.h"
 #include "include/lauxlib.h"
-#include "include/luaconf.h"
 #include "include/lua.h"
 #include "include/lualib.h"
 
@@ -226,9 +223,6 @@ static void* pluaopen_debug = 0;
     return false; \
   }
 
-#ifdef __cplusplus
-extern "C"
-#endif
 bool ImportLua()
 {
 #ifdef ANY_x64
@@ -611,15 +605,15 @@ typedef int (*luaopen_debug_t)(lua_State *L);
 
 /** functions **/
 
-#ifdef __cplusplus
 extern "C" {
-#endif
+
+#define LRET(f, ...) return ((f ## _t)p ## f)(__VA_ARGS__)
+#define LCALL(f, ...) ((f ## _t)p ## f)(__VA_ARGS__)
+
 
 /*
 ** state manipulation
 */
-#define LRET(f, ...) return ((f ## _t)p ## f)(__VA_ARGS__)
-#define LCALL(f, ...) ((f ## _t)p ## f)(__VA_ARGS__)
 lua_State *(lua_newstate) (lua_Alloc f, void *ud)
 {
   LRET(lua_newstate, f, ud);
@@ -1329,5 +1323,3 @@ MTAEXPORT void luaL_openlibs (lua_State *L) {
         lua_call(L, 1, 0);
     }
 }
-
-#endif // WIN32

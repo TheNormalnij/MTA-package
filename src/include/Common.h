@@ -16,11 +16,9 @@
 *
 *********************************************************/
 
-extern "C" {
-#	include "lua.h"
-#	include "lualib.h"
-#	include "lauxlib.h"
-}
+#pragma once
+
+#include "lua.hpp"
 
 #ifdef _WIN32
 #define MTAEXPORT extern "C" __declspec(dllexport)
@@ -42,30 +40,4 @@ extern "C" {
 #else
 #define LINUX_x86
 #endif
-#endif
-
-#include <list>
-#include <vector>
-
-#ifndef __COMMON_H
-#define __COMMON_H
-
-#define MAX_ARGUMENTS 10 // used in the function argument vector
-
-struct FunctionArguments {
-	lua_State* luaVM;
-	unsigned char nArguments;
-	unsigned char Type[10];
-	void* Arguments[10];
-};
-
-enum class FunctionArgumentType {
-	TYPE_NUMBER = 1,
-	TYPE_STRING = 2,
-	TYPE_LIGHTUSERDATA = 3,
-	TYPE_BOOLEAN = 4,
-	TYPE_NIL = 5,
-	TYPE_TABLE = 6
-};
-
 #endif
