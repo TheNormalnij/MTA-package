@@ -11,11 +11,7 @@ cmake  --build build --config Release
 ## Windows
 1. Run commands
 ```sh
-# For x86
 cmake -A Win32 . -B build
-cmake --build build --config ${{ matrix.build_type }}
-# For x64
-cmake -A x64 . -B build
 cmake --build build --config ${{ matrix.build_type }}
 ```
 1. Builded DLL will be in the `.\bin` directory
