@@ -51,10 +51,10 @@ static void* plua_close = 0;
 static void* plua_newthread = 0;
 static void* plua_atpanic = 0;
 
-    /*
-     ** basic stack manipulation
-     */
-    static void *plua_gettop = 0;
+/*
+ ** basic stack manipulation
+ */
+static void *plua_gettop = 0;
 static void* plua_settop = 0;
 static void* plua_pushvalue = 0;
 static void* plua_remove = 0;
@@ -206,6 +206,17 @@ static void* pluaL_addstring = 0;
 static void* pluaL_addvalue = 0;
 static void* pluaL_pushresult = 0;
 
+
+/*
+ ** Lua std library loaders
+ */
+static void* pluaopen_base = 0;
+static void* pluaopen_string = 0;
+static void* pluaopen_table = 0;
+static void* pluaopen_math = 0;
+static void* pluaopen_utf8 = 0;
+static void* pluaopen_os = 0;
+static void* pluaopen_debug = 0;
 
 #define SAFE_IMPORT(x) \
   p ## x = dlsym(dl, #x); \
@@ -393,6 +404,14 @@ bool ImportLua()
   SAFE_IMPORT(luaL_addstring);
   SAFE_IMPORT(luaL_addvalue);
   SAFE_IMPORT(luaL_pushresult);
+
+  SAFE_IMPORT(luaopen_base);
+  SAFE_IMPORT(luaopen_string);
+  SAFE_IMPORT(luaopen_math);
+  SAFE_IMPORT(luaopen_table);
+  SAFE_IMPORT(luaopen_os);
+  SAFE_IMPORT(luaopen_debug);
+
     return true;
 }
 #undef SAFE_IMPORT
@@ -581,6 +600,14 @@ typedef void (*luaL_addstring_t)(luaL_Buffer *B, const char *s);
 typedef void (*luaL_addvalue_t)(luaL_Buffer *B);
 typedef void (*luaL_pushresult_t)(luaL_Buffer *B);
 
+
+typedef int (*luaopen_base_t)(lua_State *L);
+typedef int (*luaopen_string_t)(lua_State *L);
+typedef int (*luaopen_table_t)(lua_State *L);
+typedef int (*luaopen_math_t)(lua_State *L);
+typedef int (*luaopen_utf8_t)(lua_State *L);
+typedef int (*luaopen_os_t)(lua_State *L);
+typedef int (*luaopen_debug_t)(lua_State *L);
 
 /** functions **/
 
@@ -1246,11 +1273,61 @@ void (luaL_pushresult) (luaL_Buffer *B)
   LCALL(luaL_pushresult, B);
 }
 
+int luaopen_base (lua_State *L) {
+    LRET(luaopen_base, L);
+}
+
+int luaopen_table (lua_State *L) {
+    LRET(luaopen_table, L);
+}
+
+int luaopen_string (lua_State *L) {
+    LRET(luaopen_string, L);
+}
+
+int luaopen_utf8 (lua_State *L) {
+    LRET(luaopen_utf8, L);
+}
+
+int luaopen_debug (lua_State *L) {
+    LRET(luaopen_debug, L);
+}
+int luaopen_os (lua_State *L) {
+    LRET(luaopen_os, L);
+}
+
+int luaopen_math (lua_State *L) {
+    LRET(luaopen_math, L);
+}
+
 #ifdef __cplusplus
 }
 #endif
 
 #undef LRET
 #undef LCALL
+
+// Missing in Lua Linux package
+
+static const luaL_Reg lualibs[] = {
+    {"", luaopen_base},
+    {LUA_LOADLIBNAME, luaopen_package},
+    {LUA_TABLIBNAME, luaopen_table},
+    //{LUA_IOLIBNAME, luaopen_io},
+    {LUA_OSLIBNAME, luaopen_os},
+    {LUA_STRLIBNAME, luaopen_string},
+    {LUA_MATHLIBNAME, luaopen_math},
+    {LUA_DBLIBNAME, luaopen_debug},
+    {NULL, NULL}
+};
+
+MTAEXPORT void luaL_openlibs (lua_State *L) {
+    const luaL_Reg *lib = lualibs;
+    for (; lib->func; lib++) {
+        lua_pushcfunction(L, lib->func);
+        lua_pushstring(L, lib->name);
+        lua_call(L, 1, 0);
+    }
+}
 
 #endif // WIN32
