@@ -64,6 +64,11 @@ if(WIN32)
     else()
         target_link_libraries(MlPackage ${CMAKE_SOURCE_DIR}/lib/lua5.1.lib)
     endif()
+    target_compile_definitions(
+        MlPackage
+        PUBLIC
+            LUA_DL_DLL)
+
 else()
     target_compile_definitions(
         MlPackage
