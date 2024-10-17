@@ -21,7 +21,6 @@
 #include "include/ILuaModuleManager.h"
 
 #include <string.h>
-#include "CFunctions.h"
 #include "luapackage.h"
 
 #ifdef __linux__
@@ -46,7 +45,9 @@ MTAEXPORT bool InitModule(ILuaModuleManager10* pManager, char* szModuleName, cha
 
 MTAEXPORT void RegisterFunctions(lua_State* luaVM) {
     if (pModuleManager && luaVM) {
-        pModuleManager->RegisterFunction(luaVM, "initLuaPackage", CFunctions::initLuaPackage);
+        lua_pushcfunction(luaVM, luaopen_package);
+        lua_pushstring(luaVM, LUA_LOADLIBNAME);
+        lua_call(luaVM, 1, 0);
     }
 }
 

@@ -40,6 +40,35 @@ static void ll_unloadlib(void *lib);
 static void *ll_load(lua_State *L, const char *path);
 static lua_CFunction ll_sym(lua_State *L, void *lib, const char *sym);
 
+// Define MTA_LUA_PATH_DEFAULT and MTA_LUA_CPATH_DEFAULT
+
+#if defined(__x86_64__) || defined(_M_X64)
+#define DIR_PREFIX "x64"
+#else
+#define DIR_PREFIX "x86"
+#endif
+
+#if defined(_WIN32)
+/*
+** In Windows, any exclamation mark ('!') in the path is replaced by the
+** path of the directory of the executable file of the current process.
+*/
+#define MTA_LUA_LDIR "!\\mods\\deathmatch\\lua\\"
+#define MTA_LUA_CDIR "!\\mods\\deathmatch\\clua\\" DIR_PREFIX "\\"
+#define MTA_LUA_PATH_DEFAULT                                                                                     \
+    MTA_LUA_LDIR "server\\?.lua;" MTA_LUA_LDIR "server\\?\\init.lua;" MTA_LUA_LDIR "shared\\?.lua;" MTA_LUA_LDIR \
+                 "shared\\?\\init.lua;" MTA_LUA_CDIR "?.lua;" MTA_LUA_CDIR "?\\init.lua"
+#define MTA_LUA_CPATH_DEFAULT ".\\?.dll;" MTA_LUA_CDIR "?.dll;" MTA_LUA_CDIR "loadall.dll"
+
+#else
+#define MTA_LUA_LDIR "./mods/deathmatch/lua/"
+#define MTA_LUA_CDIR "./mods/deathmatch/clua/" DIR_PREFIX "/"
+#define MTA_LUA_PATH_DEFAULT                                                                                 \
+    MTA_LUA_LDIR "server/?.lua;" MTA_LUA_LDIR "server/?/init.lua;" MTA_LUA_LDIR "shared/?.lua;" MTA_LUA_LDIR \
+                 "shared/?/init.lua;" MTA_LUA_CDIR "?.lua;" MTA_LUA_CDIR "?/init.lua"
+#define MTA_LUA_CPATH_DEFAULT "./?.so;" MTA_LUA_CDIR "?.so;" MTA_LUA_CDIR "loadall.so"
+#endif
+
 #if defined(LUA_DL_DLOPEN)
 /*
 ** {========================================================================
@@ -665,8 +694,8 @@ LUALIB_API int luaopen_package(lua_State *L)
         lua_rawseti(L, -2, i + 1);
     }
     lua_setfield(L, -2, "loaders");                    /* put it in field `loaders' */
-    //setpath(L, "path", LUA_PATH, LUA_PATH_DEFAULT);    /* set field `path' */
-    //setpath(L, "cpath", LUA_CPATH, LUA_CPATH_DEFAULT); /* set field `cpath' */
+    setpath(L, "path", MTA_LUA_PATH_DEFAULT);          /* set field `path' */
+    setpath(L, "cpath", MTA_LUA_CPATH_DEFAULT);        /* set field `cpath' */
     /* store config information */
     lua_pushliteral(L, LUA_DIRSEP "\n" LUA_PATHSEP "\n" LUA_PATH_MARK "\n" LUA_EXECDIR "\n" LUA_IGMARK);
     lua_setfield(L, -2, "config");
