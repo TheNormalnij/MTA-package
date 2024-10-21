@@ -20,16 +20,11 @@
 #include <unordered_map>
 #include "include/Common.h"
 #include "include/ILuaModuleManager.h"
+#include "platform/luaimports.h"
 
 #include <string.h>
 #include "luapackage.h"
 #include "resource_path_store.h"
-
-#ifdef __linux__
-#include "platform/linux/luaimports.h"
-#else
-#define ImportLua() true
-#endif
 
 ILuaModuleManager10* pModuleManager = nullptr;
 std::unordered_map<lua_State*, std::string> resourcesByVm{};

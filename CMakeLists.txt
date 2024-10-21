@@ -42,12 +42,14 @@ else()
 endif()
 
 file(GLOB INCLUDE_FILES ./src/include/*)
+file(GLOB PLATFORM_HEADERS ./src/platform/*)
 file(GLOB SOURCE_FILES ./src/*)
 
 target_sources(
     MlPackage
     PUBLIC
         ${INCLUDE_FILES}
+        ${PLATFORM_HEADERS}
         ${SOURCE_FILES}
 )
 
@@ -64,6 +66,14 @@ if(WIN32)
     else()
         target_link_libraries(MlPackage ${CMAKE_SOURCE_DIR}/lib/lua5.1.lib)
     endif()
+
+    file(GLOB WINDOWS_PLATFORM_FILES ./src/platform/windows/*)
+
+    target_sources(
+        MlPackage
+        PUBLIC
+            ${WINDOWS_PLATFORM_FILES}
+    )
 else()
     file(GLOB LINUX_PLATFORM_FILES ./src/platform/linux/*)
 
