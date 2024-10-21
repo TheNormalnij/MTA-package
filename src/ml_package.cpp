@@ -17,7 +17,6 @@
  *********************************************************/
 
 #include "ml_package.h"
-#include <iostream>
 #include <unordered_map>
 #include "include/Common.h"
 #include "include/ILuaModuleManager.h"
