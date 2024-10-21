@@ -17,11 +17,14 @@
  *********************************************************/
 
 #include "ml_package.h"
+#include <iostream>
+#include <unordered_map>
 #include "include/Common.h"
 #include "include/ILuaModuleManager.h"
 
 #include <string.h>
 #include "luapackage.h"
+#include "resource_path_store.h"
 
 #ifdef __linux__
 #include "platform/linux/luaimports.h"
@@ -30,13 +33,13 @@
 #endif
 
 ILuaModuleManager10* pModuleManager = nullptr;
+std::unordered_map<lua_State*, std::string> resourcesByVm{};
 
 MTAEXPORT bool InitModule(ILuaModuleManager10* pManager, char* szModuleName, char* szAuthor, float* fVersion) {
     pModuleManager = pManager;
 
     strncpy(szModuleName, MODULE_NAME, MAX_INFO_LENGTH);
     strncpy(szAuthor, MODULE_AUTHOR, MAX_INFO_LENGTH);
-
     *fVersion = MODULE_VERSION;
 
     ll_prepare();
@@ -44,11 +47,40 @@ MTAEXPORT bool InitModule(ILuaModuleManager10* pManager, char* szModuleName, cha
 }
 
 MTAEXPORT void RegisterFunctions(lua_State* luaVM) {
-    if (pModuleManager && luaVM) {
-        lua_pushcfunction(luaVM, luaopen_package);
-        lua_pushstring(luaVM, LUA_LOADLIBNAME);
-        lua_call(luaVM, 1, 0);
+    // Get resource path
+    lua_getglobal(luaVM, "getResourceName");
+    lua_getglobal(luaVM, "resource");
+    lua_call(luaVM, 1, 1);
+
+    auto resourceName = std::string{lua_tostring(luaVM, -1)};
+    lua_pop(luaVM, -1);
+
+    lua_getglobal(luaVM, "isResourceArchived");
+    lua_getglobal(luaVM, "resource");
+    lua_call(luaVM, 1, 1);
+
+    bool isArchived = lua_toboolean(luaVM, -1);
+    lua_pop(luaVM, -1);
+
+    if (isArchived) {
+        ResourcePathStore::addResource(resourceName, ResourcePathStore::RESOURCE_PATH_ARCHIVED);
+    } else {
+        lua_getglobal(luaVM, "getResourceOrganizationalPath");
+        lua_getglobal(luaVM, "resource");
+        lua_call(luaVM, 1, 1);
+
+        const char* resourcePath = lua_tostring(luaVM, -1);
+        lua_pop(luaVM, -1);
+
+        ResourcePathStore::addResource(resourceName, resourcePath);
     }
+
+    resourcesByVm[luaVM] = resourceName;
+
+    // Add require
+    lua_pushcfunction(luaVM, luaopen_package);
+    lua_pushstring(luaVM, LUA_LOADLIBNAME);
+    lua_call(luaVM, 1, 0);
 }
 
 MTAEXPORT bool DoPulse() {
@@ -56,6 +88,8 @@ MTAEXPORT bool DoPulse() {
 }
 
 MTAEXPORT bool ResourceStopped([[maybe_unused]] lua_State* luaVM) {
+    ResourcePathStore::removeResource(resourcesByVm[luaVM]);
+    resourcesByVm.erase(luaVM);
     return true;
 }
 

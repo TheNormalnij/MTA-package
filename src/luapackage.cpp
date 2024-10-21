@@ -10,9 +10,11 @@
 
 #include "luapackage.h"
 #include "include/luaconf.h"
+#include "resource_path_store.h"
 
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 
 #define loadlib_c
 #define LUA_LIB
@@ -53,19 +55,23 @@ static lua_CFunction ll_sym(lua_State *L, void *lib, const char *sym);
 ** In Windows, any exclamation mark ('!') in the path is replaced by the
 ** path of the directory of the executable file of the current process.
 */
+#define MTA_RESOURCES_PATH "!\\mods\\deathmatch\\resources\\"
+#define MTA_UNPACKED_RESOURCES_PATH "!\\mods\\deathmatch\\resource-cache\\unzipped\\"
 #define MTA_LUA_LDIR "!\\mods\\deathmatch\\lua\\"
 #define MTA_LUA_CDIR "!\\mods\\deathmatch\\clua\\" DIR_PREFIX "\\"
 #define MTA_LUA_PATH_DEFAULT                                                                                     \
     MTA_LUA_LDIR "server\\?.lua;" MTA_LUA_LDIR "server\\?\\init.lua;" MTA_LUA_LDIR "shared\\?.lua;" MTA_LUA_LDIR \
-                 "shared\\?\\init.lua;" MTA_LUA_CDIR "?.lua;" MTA_LUA_CDIR "?\\init.lua"
+                 "shared\\?\\init.lua;" MTA_LUA_CDIR "?.lua;" MTA_LUA_CDIR "?\\init.lua;" MTA_RESOURCES_PATH "?.lua"
 #define MTA_LUA_CPATH_DEFAULT ".\\?.dll;" MTA_LUA_CDIR "?.dll;" MTA_LUA_CDIR "loadall.dll"
 
 #else
+#define MTA_RESOURCES_PATH "./mods/deathmatch/resources/"
+#define MTA_UNPACKED_RESOURCES_PATH "./mods/deathmatch/resource-cache/unzipped/"
 #define MTA_LUA_LDIR "./mods/deathmatch/lua/"
 #define MTA_LUA_CDIR "./mods/deathmatch/clua/" DIR_PREFIX "/"
 #define MTA_LUA_PATH_DEFAULT                                                                                 \
     MTA_LUA_LDIR "server/?.lua;" MTA_LUA_LDIR "server/?/init.lua;" MTA_LUA_LDIR "shared/?.lua;" MTA_LUA_LDIR \
-                 "shared/?/init.lua;" MTA_LUA_CDIR "?.lua;" MTA_LUA_CDIR "?/init.lua"
+                 "shared/?/init.lua;" MTA_LUA_CDIR "?.lua;" MTA_LUA_CDIR "?/init.lua;" MTA_RESOURCES_PATH "?.lua"
 #define MTA_LUA_CPATH_DEFAULT "./?.so;" MTA_LUA_CDIR "?.so;" MTA_LUA_CDIR "loadall.so"
 #endif
 
@@ -500,6 +506,52 @@ static int loader_preload(lua_State *L)
     return 1;
 }
 
+static int loader_mta_resource(lua_State* L) {
+    const char* name = luaL_checkstring(L, 1);
+    if (name[0] != ':') {
+        lua_pushnil(L);
+        return 1;
+    }
+    name++;
+
+    const char* nameEnd = name;
+    while (*nameEnd && *nameEnd != '.') {
+        nameEnd++;
+    }
+
+    if (!*nameEnd) {
+        lua_pushfstring(L, "\n\tmissing file name in require: %s", name);
+        return 1;
+    }
+
+    auto resourceName = std::string_view{name, static_cast<size_t>(nameEnd - name)};
+    std::string_view resourcePath = ResourcePathStore::GetPath(resourceName);
+
+    if (resourcePath.data() == nullptr) {
+        lua_pushfstring(L, "\n\tresource is not running: %s", name);
+        return 1;
+    }
+
+    // without terminated /
+    std::string fullPath{};
+
+    if (ResourcePathStore::RESOURCE_PATH_ARCHIVED.compare(resourcePath) == 0) {
+        fullPath = MTA_UNPACKED_RESOURCES_PATH;
+    } else {
+        fullPath = std::string{MTA_RESOURCES_PATH}.append(resourcePath);
+    }
+
+    fullPath.append(resourceName);
+
+    auto filePath = luaL_gsub(L, ++nameEnd, ".", LUA_DIRSEP);
+    fullPath.append(LUA_DIRSEP).append(filePath).append(".lua");
+    lua_remove(L, -1); /* remove 'gsub' result */
+
+    if (luaL_loadfile(L, fullPath.c_str()) != 0)
+        loaderror(L, fullPath.c_str());
+    return 1;
+}
+
 static const int sentinel_ = 0;
 #define sentinel ((void *)&sentinel_)
 
@@ -667,8 +719,7 @@ static const luaL_Reg ll_funcs[] = {
     {"require", ll_require},
     {NULL, NULL}};
 
-static const lua_CFunction loaders[] =
-    {loader_preload, loader_Lua, loader_C, loader_Croot, NULL};
+static const lua_CFunction loaders[] = {loader_preload, loader_mta_resource, loader_Lua, loader_C, loader_Croot, NULL};
 
 LUALIB_API int luaopen_package(lua_State *L)
 {
