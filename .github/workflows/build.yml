@@ -22,7 +22,7 @@ jobs:
       with:
         name: Windows_${{ matrix.build_type }}_${{ matrix.arch }}
         path: |
-          ${{ github.workspace }}\build_msvc\ml_package.dll
+          ${{ github.workspace }}\build_msvc\${{ matrix.build_type }}\ml_package.dll
   linux:
     name: Build for Linux
     runs-on: ubuntu-latest
