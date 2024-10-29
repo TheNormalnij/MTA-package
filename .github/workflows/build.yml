@@ -11,14 +11,14 @@ jobs:
             build_type: ["Release", "Debug"]
             arch: ["Win32", "x64"]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Compile with MSVC for Windows
       run: |
         cmake -A ${{ matrix.arch }} . -B build_msvc
         cmake --build build_msvc --config ${{ matrix.build_type }}
       shell: bash
     - name: Store artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Windows_${{ matrix.build_type }}_${{ matrix.arch }}
         path: |
@@ -31,7 +31,7 @@ jobs:
             build_type: ["Release", "Debug"]
             arch: ["x86", "x64"]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: download x86 libs
       if: ${{ matrix.arch == 'x86' }}
       run: sudo apt install gcc-multilib g++-multilib
@@ -41,7 +41,7 @@ jobs:
         cmake --build build --config ${{ matrix.build_type }}
       shell: bash
     - name: Store artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Linux_${{ matrix.build_type }}_${{ matrix.arch }}
         path: |
