@@ -3,6 +3,7 @@
 
 #include "resource_path_store.h"
 #include <string>
+#include <string_view>
 #include <unordered_map>
 
 std::unordered_map<std::string, std::string> pathStore{};
