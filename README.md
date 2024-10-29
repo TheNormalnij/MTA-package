@@ -77,6 +77,10 @@ sudo apt install luarocks lua5.1
 ./luarocks.sh install rapidjson
 ```
 
+```lua
+local rapidjson = require "rapidjson"
+```
+
 ## Windows
 
 TODO. [Bad variant](https://forum.multitheftauto.com/topic/138511-luarocks-integration/)
