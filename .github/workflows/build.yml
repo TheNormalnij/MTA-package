@@ -22,7 +22,7 @@ jobs:
       with:
         name: Windows_${{ matrix.build_type }}_${{ matrix.arch }}
         path: |
-          ${{ github.workspace }}/bin/ml_package.dll
+          ${{ github.workspace }}/build_msvc/ml_package.dll
   linux:
     name: Build for Linux
     runs-on: ubuntu-latest
@@ -45,4 +45,4 @@ jobs:
       with:
         name: Linux_${{ matrix.build_type }}_${{ matrix.arch }}
         path: |
-          ${{ github.workspace }}/bin/ml_package.so  
+          ${{ github.workspace }}/build/ml_package.so
