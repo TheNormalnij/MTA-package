@@ -21,6 +21,8 @@ cmake --build build --config Release
 
 # Installation
 
+You can get prebuilded packages on [GitHub releases page](https://github.com/TheNormalnij/MTA-package/releases)
+
 ## Windows
 
 * 32 bit: Copy 32 bit `ml_package.dll` into the `MTA San Andreas\server\mods\deathmatch\modules\` directory.
@@ -41,3 +43,40 @@ Then, add the following line in `mtaserver.conf`:
 ```xml
   <module src="ml_package.so" />
 ```
+
+# Usage
+
+```lua
+-- You can use absolute path for require function
+-- The module start searching from 'mods/deathmatch/resources' folder
+local module = require "folder1.folder2.resourceName.resourceFile"
+
+-- Relative path is supported too. It starts with ":"
+local module = require ":resourceName.resourceFile"
+
+-- You can use "mods/deathmatch/lua/server" folder for shared code
+local fooModule = require "mysmalllib"
+local barModule = require "mylib.libfile"
+```
+
+# LuaRocks integration
+
+[LuaRocks](https://luarocks.org/) has some usefull native modules for Lua. `require` supports native modules.
+
+## Linux
+
+1. Install Lua and luarocks
+```sh
+sudo apt install luarocks lua5.1
+```
+
+2. Copy `scripts/luarocks.sh` from this repository to your MTA server forlder.
+
+3. Now you can use `luarocks.sh` to build native modules
+```sh
+./luarocks.sh install rapidjson
+```
+
+## Windows
+
+TODO. [Bad variant](https://forum.multitheftauto.com/topic/138511-luarocks-integration/)
