@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.20)
 
 project(MlPackage VERSION 3.0 LANGUAGES CXX)
 
-add_library(MlPackage SHARED)
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_library(MlPackage SHARED)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)

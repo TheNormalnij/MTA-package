@@ -10,11 +10,11 @@
 
 #include "luapackage.h"
 #include "include/luaconf.h"
+#include <string>
 #include "resource_path_store.h"
 
 #include <stdlib.h>
 #include <string.h>
-#include <string>
 
 #define loadlib_c
 #define LUA_LIB
