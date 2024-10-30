@@ -81,6 +81,12 @@ sudo apt install luarocks lua5.1
 local rapidjson = require "rapidjson"
 ```
 
-## Windows
+## Windows x86 only
 
-TODO. [Bad variant](https://forum.multitheftauto.com/topic/138511-luarocks-integration/)
+1. Install Visual Studio and CMake via Visual Studio Installer
+2. Copy `scripts/luarocks.ps1` from this repository to your MTA server forlder.
+
+3. Now you can use `luarocks.ps1` to build native modules with using powerschell console
+```powershell
+.\luarocks.ps1 install rapidjson
+```
