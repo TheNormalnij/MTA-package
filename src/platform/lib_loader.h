@@ -16,10 +16,10 @@
 ** In Windows, any exclamation mark ('!') in the path is replaced by the
 ** path of the directory of the executable file of the current process.
 */
-#define MTA_RESOURCES_PATH "!\\mods\\deathmatch\\resources\\"
-#define MTA_UNPACKED_RESOURCES_PATH "!\\mods\\deathmatch\\resource-cache\\unzipped\\"
-#define MTA_LUA_LDIR "!\\mods\\deathmatch\\lua\\"
-#define MTA_LUA_CDIR "!\\mods\\deathmatch\\clua\\" DIR_PREFIX "\\"
+#define MTA_RESOURCES_PATH ".\\mods\\deathmatch\\resources\\"
+#define MTA_UNPACKED_RESOURCES_PATH ".\\mods\\deathmatch\\resource-cache\\unzipped\\"
+#define MTA_LUA_LDIR ".\\mods\\deathmatch\\lua\\"
+#define MTA_LUA_CDIR ".\\mods\\deathmatch\\clua\\" DIR_PREFIX "\\"
 #define MTA_LUA_PATH_DEFAULT                                                                                     \
     MTA_LUA_LDIR "server\\?.lua;" MTA_LUA_LDIR "server\\?\\init.lua;" MTA_LUA_LDIR "shared\\?.lua;" MTA_LUA_LDIR \
                  "shared\\?\\init.lua;" MTA_LUA_CDIR "?.lua;" MTA_LUA_CDIR "?\\init.lua;" MTA_RESOURCES_PATH "?.lua"
